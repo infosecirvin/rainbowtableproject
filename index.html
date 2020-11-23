@@ -1,0 +1,13 @@
+{{if .Success}}
+    <h1>Thanks for your message!</h1>
+{{else}}
+<h1><center>Irvin's RainbowTable Project</center></h1>
+<h2><center>Submit your hash below</center></h2>
+    <form method="POST">
+        <label>Email:</label><br />
+        <input type="text" name="email"><br />
+        <label>Hash:</label><br />
+        <input type="text" name="hash"><br />
+        <input type="submit">
+    </form>
+{{end}}
