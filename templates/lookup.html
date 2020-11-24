@@ -1,0 +1,15 @@
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <hr>
+    <h1>{{ title }}</h1>
+    <form action="" method="post" novalidate>
+        {{ form.csrf_token }}
+        <p>
+            {{ form.hash.label }}<br>
+            {{ form.hash(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
