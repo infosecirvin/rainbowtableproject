@@ -1,4 +1,4 @@
-# Irvin's RainbowTable Cracking WebApp"
+# Irvin's RainbowTable Cracking WebApp
 Rainbow Tables can be downloaded here: https://infocon.org/rainbow%20tables/ or https://freerainbowtables.com/
 Test passwords can be generated at https://www.tobtu.com/lmntlm.php
 
