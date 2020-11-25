@@ -21,7 +21,7 @@ def lookup():
     form = HashForm()
     if form.validate_on_submit():
         hash = form.hash.data
-        process = subprocess.Popen(["./rcracki_mt","-h", hash, "~/git/rt/"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(["./rt.sh","-a", hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         app.config['value'], err = process.communicate()
         flash('Lookup requested for hash {}'.format(hash))
         #return render_template('lookup.html', title=out, form=form)
