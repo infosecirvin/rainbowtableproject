@@ -1,5 +1,5 @@
 #with help from Vinay Venkat
-#pip install flask flask-wtf
+#pip3 install flask flask-wtf
 from flask import render_template, Flask, redirect, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
@@ -24,7 +24,6 @@ def lookup():
         process = subprocess.Popen(["./rt.sh","-a", hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         app.config['value'], err = process.communicate()
         flash('Lookup requested for hash {}'.format(hash))
-        #return render_template('lookup.html', title=out, form=form)
         redirect('/lookup')
     print(app.config['value'])
     return render_template('lookup.html', title=app.config['value'], form=form)
