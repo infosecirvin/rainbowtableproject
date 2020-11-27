@@ -13,7 +13,7 @@ app.config['value']=''
 
 
 class HashForm(FlaskForm):
-    hash = StringField('Hash (LM, NTLM, MD5)', validators=[DataRequired()])
+    hash = StringField('Hash', validators=[DataRequired()])
     submit = SubmitField('Lookup')
 
 @app.route('/lookup', methods=['GET', 'POST'])

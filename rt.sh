@@ -15,6 +15,7 @@ function no() {
 	nul=$(./rcracki_mt -t 4 -o results.txt -h $hash ~/git/rt/)
 }
 
+
 while test $# -gt 0; do
 		case "$1" in
 			-a)
