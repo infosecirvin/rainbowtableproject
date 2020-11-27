@@ -14,6 +14,7 @@ app.config['value']=''
 
 class HashForm(FlaskForm):
     hash = StringField('Hash (LM, NTLM, MD5)', validators=[DataRequired()])
+    sha = StringField('SHA1 Hash (MySQL & SHA1)', validators=[DataRequired()])
     submit = SubmitField('Lookup')
 
 @app.route('/lookup', methods=['GET', 'POST'])
@@ -26,6 +27,16 @@ def lookup():
         flash('Lookup requested for hash {}'.format(hash))
         redirect('/lookup')
     print(app.config['value'])
-    return render_template('lookup.html', title=app.config['value'], form=form)
+    return render_template('lookup2.html', title=app.config['value'], form=form)
+
+    form = ShaForm()
+    if form.validate_on_submit():
+        hash = form.sha.data
+        process = subprocess.Popen(["./rt.sh","-b", sha], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        app.config['value'], err = process.communicate()
+        flash('Lookup requested for hash {}'.format(sha))
+        redirect('/lookup')
+    print(app.config['value'])
+    return render_template('lookup2.html', title=app.config['value'], form=form)
 
 app.run(host='0.0.0.0', port=3000)
