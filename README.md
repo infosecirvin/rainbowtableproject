@@ -1,12 +1,8 @@
-# Irvin's RainbowTable Cracking WebApp
-Rainbow Tables can be downloaded here: https://infocon.org/rainbow%20tables/ or https://freerainbowtables.com/
-Test passwords can be generated at https://www.tobtu.com/lmntlm.php
+# Irvin's Rainbowtable Project
+Follow the instructions on [my blog](https://www.infosecirvin.info/blog/rainbowtables.html) to implement this solution on your own system.
 
-## Before Starting
-You will need to update the location of your Rainbowtables within *rt.sh* in order for this to work as expected.
+Thanks to Vinay Venkat for helping build out the WebApp portion!
 
-## Running the WebApp
-Run *main.py* to get started. Navigate to http://localhost:3000/lookup to run searches for your password.
-
-## Thank you!
-Thank you to Vinay Venkat for providing the Python code.
+Install Requirements:
+* Python3, Apache or Nginx
+* pip3 install flask flask-wtf waitress

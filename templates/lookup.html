@@ -1,22 +1,101 @@
 <head>
     <title>{{ title }}</title>
+    <style>
+      label {
+        display: inline-block;
+        width: 100px;
+      }
+
+      div {
+        margin-bottom: 10px;
+      }
+    </style>
 </head>
 <body>
   <h1><center>Irvin's RainbowTable Cracking WebApp</center></h1>
   <p>A Few Notes:
-    <li>LM Hashes must be up to 7 Hexadecimal characters (AAD3B435B51404EE is normal for a password of 1-7.) Any password larger than 7 characters must be broken up in halves. LM hashes are also case insensitive.</li>
-    <li>Do not refresh the page once you hit the "Lookup" button; the tables are being searched and your result will appear below.</li>
-    <li>The top box only searches for LM, NTLM and MD5 passwords. The bottom will search for SHA1/MySQL passwords.</li>
+    <li>This WebApp functions one hash at a time. It does not solve multiple hashes at once.</li>
+    <li>LANMAN Hashes: must be up to 7 Hexadecimal characters (<b>AAD3B435B51404EE</b> is a normal second half for a Lanman password length of 1-7 characters and should <b>not</b> be submitted.) Any password larger than 7 characters must be broken up in halves. LM hashes are also case insensitive.</li>
+    <li>Do not refresh the page once you click "Submit" button. The tables are being searched and you will be presented with the results below.</li>
     <li>This is to be used for contest and educational purposes only; not responsible for law enforcement's actions against illegal use of this resource.</li>
     </p>
+<p>Thanks to Vinay Venkat for building out this platform.</p>
     <hr>
     <h2>{{ title }}</h2>
-    <form action="" method="post" novalidate>
-        {{ form.csrf_token }}
-        <p>
-            {{ form.hash.label }}<br>
-            {{ form.hash(size=32) }}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+
+    <div>
+      <label>Hash:</label>
+      <input type="text" style="width:300px" placeholder="Hash:" id="hashT">
+    </div>
+    <br>
+    <div>
+    <button type="button" onclick="runCmd(0);">Submit Lanman (LM)</button>
+    <button type="button" onclick="runCmd(1);">Submit MD5</button>
+    <button type="button" onclick="runCmd(2);">Submit SHA1</button>
+    <button type="button" onclick="runCmd(3);">Submit NTLM</button>
+    </div>
+    <br>
+    <div style="display: none;" id="rescont">
+      <h3><center>Results</center></h3>
+      <br>
+      <div>
+        <span id=status></span>
+        <br>
+        <pre><code id=output></code></pre>
+      <div>
+    </div>
+
+    <script>
+      function checkUpdates() {
+        fetch("https://class.infosecirvin.info/rainbow/cmd/rcrack?key=" + KEY)
+          .then(response => response.json())
+          .then(data => {
+            //console.log(data);
+            if(! data.hasOwnProperty('status')){
+              console.log(data.report);
+              clearInterval(INTV);
+              document.getElementById("status").textContent = "Complete";
+              document.getElementById("output").innerHTML = data.report;
+            }
+          });
+      }
+
+      function runCmd(btn) {
+        if (btn == null || btn > 3 || btn < 0){
+          alert("Quit trying to hack!")
+          return;
+        }
+        let hash = document.getElementById("hashT").value;
+        let pdata = {args: [hash, btn.toString()]};
+        //console.log(pdata);
+        var respData = null
+        var id = null
+
+        document.getElementById("rescont").style = "";
+
+        fetch("https://class.infosecirvin.info/rainbow/cmd/rcrack", {
+          method: "POST",
+          body: JSON.stringify(pdata),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(res => res.json())
+          .then(data => {
+             console.log(data);
+             if (data == null){
+               document.getElementById("status").textContent = "Failure";
+             } else {
+               document.getElementById("output").innerHTML = "";
+               document.getElementById("status").textContent = data.status.replace("running", "Running... This may take a few minutes...");
+               KEY = data.key;
+               INTV = window.setInterval(function(){
+                 checkUpdates();
+               }, 2000);
+             }
+          })
+          .catch((error) => {
+            document.getElementById("status").textContent = "Failure";
+          });
+      }
+    </script>
 </body>
